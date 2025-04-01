@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    build: ./back
+    build: ./backend
     ports:
       - "8080:8080"
     depends_on:
@@ -10,7 +10,7 @@ services:
       - rabbitmq
 
   frontend:
-    build: ./front
+    build: ./frontend
     ports:
       - "3000:3000"
     depends_on:

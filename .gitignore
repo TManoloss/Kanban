@@ -1,0 +1,60 @@
+# =========================
+# 📌 IGNORAR O FRONTEND (Next.js, Node.js)
+# =========================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/build/
+frontend/coverage/
+frontend/.vercel/
+
+# Arquivos de configuração
+frontend/.env*
+frontend/.DS_Store
+frontend/*.pem
+frontend/next-env.d.ts
+frontend/*.tsbuildinfo
+
+# Debug logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+
+# Yarn PnP
+frontend/.pnp
+frontend/.pnp.*
+frontend/.yarn/*
+!frontend/.yarn/patches
+!frontend/.yarn/plugins
+!frontend/.yarn/releases
+!frontend/.yarn/versions
+
+# =========================
+# 📌 IGNORAR O BACKEND (Spring Boot, Java)
+# =========================
+backend/target/
+backend/.env
+backend/*.log
+backend/HELP.md
+
+# Maven
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Spring Tool Suite (STS)
+backend/.apt_generated
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.springBeans
+backend/.sts4-cache
+
+# =========================
+# 📌 IGNORAR CONFIGURAÇÕES DE EDITORES
+# =========================
+.vscode/
+.idea/
