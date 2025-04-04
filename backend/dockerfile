@@ -1,5 +1,17 @@
-FROM eclipse-temurin:21-jdk AS builder
+# Etapa de build
+FROM maven:3.9.4-eclipse-temurin-21 AS builder
 WORKDIR /app
-COPY . /app/
+# Copia o arquivo pom.xml (para cache de dependências)
+COPY pom.xml .
+# Copia o restante do código fonte
+COPY src ./src
+# Executa o build pulando os testes
+RUN mvn clean package -DskipTests
+
+# Etapa de runtime
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+# Copia o JAR gerado pela etapa anterior (verifique se o nome é "back.jar"; se incluir a versão, ajuste o nome)
+COPY --from=builder /app/target/back-0.0.1-SNAPSHOT.jar back.jar
 EXPOSE 8080
 ENTRYPOINT [ "java", "-jar", "back.jar" ]
