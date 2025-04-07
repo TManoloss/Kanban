@@ -1,13 +1,27 @@
 version: "3.8"
+
 services:
   backend:
     build: ./backend
     ports:
-      - "8080:8080"
+      - "8080:8080" # Mapeia porta externa 8080 para interna 3000
+    environment:
+      DATABASE_URL: "postgresql://user:sua_senha@db:5432/mydb?schema=public"
+      JWT_SECRET: "seu_secreto_jwt"
+      NODE_ENV: "production"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
-      - db
-      - redis
-      - rabbitmq
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    command: sh -c "npm run db:deploy && node dist/index.js"
 
   frontend:
     build: ./frontend
@@ -20,18 +34,37 @@ services:
     image: postgres:13
     environment:
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: sua_senha 
+      POSTGRES_PASSWORD: sua_senha
       POSTGRES_DB: mydb
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
+    volumes:
+      - redis-data:/data
 
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: sua_senha
+
+volumes:
+  postgres-data:
+  redis-data:
+  rabbitmq-data:
