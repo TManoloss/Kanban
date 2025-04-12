@@ -2,7 +2,8 @@ import { Router } from 'express';
 import { authenticate } from '../middleware/auth';
 import {
   createBoard,
-  getBoards
+  getBoards,
+  getBoardById
 } from '../controllers/board';
 import {
   updateColumnOrder
@@ -12,17 +13,18 @@ import {
   updateTaskPosition
 } from '../controllers/task';
 
-const router = Router();
+const routerKanban = Router();
 
 // Boards
-router.post('/boards', (req, res, next) => {createBoard(req ,res);});
-router.get('/boards', (req, res, next) => { getBoards(req, res)});
+routerKanban.post('/boards', (req, res, next) => {createBoard(req ,res);});
+routerKanban.get('/boards', (req, res, next) => { getBoards(req, res)});
+routerKanban.get('/:id', (req, res) =>  {getBoardById(req, res)});
 
 // Columns
-router.put('/columns/order', (req, res, next) => {updateColumnOrder(req, res)});
+routerKanban.put('/columns/order', (req, res, next) => {updateColumnOrder(req, res)});
 
 // Tasks
-router.post('/tasks', (req, res, next) => {createTask(req, res)});
-router.put('/tasks/position', (req, res, next) => {updateColumnOrder(req, res)});
+routerKanban.post('/tasks', (req, res, next) => {createTask(req, res)});
+routerKanban.put('/tasks/position', (req, res, next) => {updateColumnOrder(req, res)});
 
-export default router;
+export default routerKanban ;
